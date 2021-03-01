@@ -1,7 +1,7 @@
 import { showAuthors } from '../components/authors';
 import { showBooks } from '../components/books';
 import signOut from '../helpers/auth/signOut';
-import getAuthors from '../helpers/data/authorData';
+import { getAuthors } from '../helpers/data/authorData';
 import { getBooks } from '../helpers/data/bookData';
 
 // navigation events
