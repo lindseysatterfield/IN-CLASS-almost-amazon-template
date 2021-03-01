@@ -41,7 +41,19 @@ const createAuthor = (authorObject) => new Promise((resolve, reject) => {
       console.warn(response.data.name);
     }).catch((error) => reject(error));
 });
+
+// GET FAVORITE AUTHOR
+const getFavoriteAuthor = () => new Promise((resolve, reject) => {
+  axios.get(`${dbUrl}/authors.json?orderBy="favorite"&equalTo=true`)
+    .then((response) => {
+      const favoriteAuthorsArray = Object.values(response.data);
+      resolve(favoriteAuthorsArray);
+    }).catch((error) => reject(error));
+});
+
 // UPDATE AUTHOR
 // SEARCH AUTHORS
 
-export { getAuthors, createAuthor, deleteAuthor };
+export {
+  getAuthors, createAuthor, deleteAuthor, getFavoriteAuthor
+};
