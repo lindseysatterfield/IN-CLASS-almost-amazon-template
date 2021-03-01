@@ -11,11 +11,11 @@ const getBooks = () => new Promise((resolve, reject) => {
     .catch((error) => reject(error));
 });
 // DELETE BOOK
-const deleteBook = (firebaseKey) => new Promise((resolve, reject) => {
-  axios.delete(`${dbUrl}/books/${firebaseKey}.json`)
-    .then(() => getBooks().then((booksArray) => resolve(booksArray)))
-    .catch((error) => reject(error));
-});
+// const deleteBook = (firebaseKey) => new Promise((resolve, reject) => {
+//   axios.delete(`${dbUrl}/books/${firebaseKey}.json`)
+//     .then(() => getBooks().then((booksArray) => resolve(booksArray)))
+//     .catch((error) => reject(error));
+// });
 
 // CREATE BOOK
 const createBook = (bookObject) => new Promise((resolve, reject) => {
@@ -33,4 +33,4 @@ const createBook = (bookObject) => new Promise((resolve, reject) => {
 // UPDATE BOOK
 // SEARCH BOOKS
 
-export { getBooks, createBook, deleteBook };
+export { getBooks, createBook };
