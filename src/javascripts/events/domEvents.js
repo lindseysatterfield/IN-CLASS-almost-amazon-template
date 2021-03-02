@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import { showBooks } from '../components/books';
 import addBookForm from '../components/forms/addBookForm';
 import { createBook, deleteBook } from '../helpers/data/bookData';
@@ -5,7 +7,7 @@ import addAuthorForm from '../components/forms/addAuthorForm';
 import { createAuthor, deleteAuthor } from '../helpers/data/authorData';
 import { showAuthors } from '../components/authors';
 
-const domEvents = () => {
+const domEvents = (uid) => {
   document.querySelector('body').addEventListener('click', (e) => {
     // CLICK EVENT FOR DELETING A BOOK
     if (e.target.id.includes('delete-book')) {
@@ -31,10 +33,11 @@ const domEvents = () => {
         image: document.querySelector('#image').value,
         price: document.querySelector('#price').value,
         sale: document.querySelector('#sale').checked,
-        author_id: document.querySelector('#author').value
+        author_id: document.querySelector('#author').value,
+        uid
       };
 
-      createBook(bookObject).then((booksArray) => showBooks(booksArray));
+      createBook(bookObject, uid).then((booksArray) => showBooks(booksArray));
     }
 
     // CLICK EVENT FOR SHOWING MODAL FORM FOR ADDING A BOOK
@@ -67,9 +70,10 @@ const domEvents = () => {
       e.preventDefault();
       const authorObject = {
         first_name: document.querySelector('#author-first-name').value,
-        last_name: document.querySelector('#author-last-name').value
+        last_name: document.querySelector('#author-last-name').value,
+        uid: firebase.auth().currentUser.uid
       };
-      createAuthor(authorObject).then((authorArray) => showAuthors(authorArray));
+      createAuthor(authorObject, uid).then((authorArray) => showAuthors(authorArray));
     }
     // ADD CLICK EVENT FOR EDITING AN AUTHOR
   });

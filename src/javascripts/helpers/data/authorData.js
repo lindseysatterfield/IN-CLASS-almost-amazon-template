@@ -5,22 +5,22 @@ import firebaseConfig from '../auth/apiKeys';
 const dbUrl = firebaseConfig.databaseURL;
 
 // GET AUTHORS
-const getAuthors = () => new Promise((resolve, reject) => {
-  axios.get(`${dbUrl}/authors.json`).then((response) => {
-    if (response.data) {
-      const authorArray = Object.values(response.data);
-      resolve(authorArray);
-    } else {
-      resolve([]);
-    }
-  }).catch((error) => reject(error));
-});
-
 // const getAuthors = () => new Promise((resolve, reject) => {
-//   axios.get(`${dbUrl}/authors.json`)
-//     .then((response) => resolve(Object.values(response.data)))
-//     .catch((error) => reject(error));
+//   axios.get(`${dbUrl}/authors.json`).then((response) => {
+//     if (response.data) {
+//       const authorArray = Object.values(response.data);
+//       resolve(authorArray);
+//     } else {
+//       resolve([]);
+//     }
+//   }).catch((error) => reject(error));
 // });
+
+const getAuthors = (uid) => new Promise((resolve, reject) => {
+  axios.get(`${dbUrl}/authors.json?orderBy="uid"&equalTo="${uid}"`)
+    .then((response) => resolve(Object.values(response.data)))
+    .catch((error) => reject(error));
+});
 
 // DELETE AUTHOR
 const deleteAuthor = (firebaseKey) => new Promise((resolve, reject) => {
@@ -30,13 +30,13 @@ const deleteAuthor = (firebaseKey) => new Promise((resolve, reject) => {
 });
 
 // CREATE AUTHOR
-const createAuthor = (authorObject) => new Promise((resolve, reject) => {
+const createAuthor = (authorObject, uid) => new Promise((resolve, reject) => {
   axios.post(`${dbUrl}/authors.json`, authorObject)
     .then((response) => {
       const body = { firebaseKey: response.data.name };
       axios.patch(`${dbUrl}/authors/${response.data.name}.json`, body)
         .then(() => {
-          getAuthors().then((authorsArray) => resolve(authorsArray));
+          getAuthors(uid).then((authorsArray) => resolve(authorsArray));
         });
       console.warn(response.data.name);
     }).catch((error) => reject(error));
